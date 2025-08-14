@@ -20,7 +20,6 @@ ENV N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS=false
 # Switch back to node user
 USER node
 
-# Explicitly define ENTRYPOINT and CMD to start n8n
-# Use the path found or default to /usr/local/bin/n8n
+# Explicitly define ENTRYPOINT to start n8n
 ENTRYPOINT ["/usr/local/bin/n8n"]
-CMD ["start"]
+CMD [""]  # Empty CMD lets ENTRYPOINT run without arguments
