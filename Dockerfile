@@ -8,8 +8,9 @@ RUN apk update && apk add --no-cache \
     wget \
     && rm -rf /var/cache/apk/*
 
-# Fix permissions issue and find n8n location
-RUN find / -name "n8n" -type f -executable 2>/dev/null || true
+# Find the n8n executable and set the correct path
+RUN find / -name "n8n" -type f -executable 2>/dev/null | grep -m 1 . > /tmp/n8n_path
+RUN N8N_PATH=$(cat /tmp/n8n_path) && [ -n "$N8N_PATH" ] && echo "n8n found at: $N8N_PATH" || echo "n8n not found"
 RUN which node || true
 RUN echo $PATH
 
@@ -19,4 +20,7 @@ ENV N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS=false
 # Switch back to node user
 USER node
 
-# Use the original image's default command
+# Explicitly define ENTRYPOINT and CMD to start n8n
+# Use the path found or default to /usr/local/bin/n8n
+ENTRYPOINT ["/usr/local/bin/n8n"]
+CMD ["start"]
