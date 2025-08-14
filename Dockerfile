@@ -16,6 +16,6 @@ ENV N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS=false
 
 USER node
 
-# Explicitly define ENTRYPOINT and override CMD to avoid "start"
+# Expliciet ENTRYPOINT en lege CMD om "start" te vermijden
 ENTRYPOINT ["/usr/local/bin/n8n"]
-CMD [""]  # Empty CMD prevents the "start" command from being executed
+CMD [""]  # Lege CMD voorkomt uitvoering van "start"
