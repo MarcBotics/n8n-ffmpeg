@@ -8,9 +8,13 @@ RUN apk update && apk add --no-cache \
     wget \
     && rm -rf /var/cache/apk/*
 
-# Find the n8n executable and set the correct path
+# Find and verify the n8n executable
 RUN find / -name "n8n" -type f -executable 2>/dev/null | grep -m 1 . > /tmp/n8n_path
-RUN N8N_PATH=$(cat /tmp/n8n_path) && [ -n "$N8N_PATH" ] && echo "n8n found at: $N8N_PATH" || echo "n8n not found"
+RUN N8N_PATH=$(cat /tmp/n8n_path) && \
+    [ -n "$N8N_PATH" ] && \
+    echo "n8n found at: $N8N_PATH" && \
+    chmod +x "$N8N_PATH" || \
+    echo "n8n not found"
 RUN which node || true
 RUN echo $PATH
 
@@ -22,4 +26,4 @@ USER node
 
 # Explicitly define ENTRYPOINT to start n8n
 ENTRYPOINT ["/usr/local/bin/n8n"]
-CMD [""]  # Empty CMD lets ENTRYPOINT run without arguments
+# Remove CMD to avoid fallback issues
