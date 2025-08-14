@@ -18,7 +18,10 @@ RUN echo $PATH
 
 ENV N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS=false
 
+# Create the .n8n directory. Permissions will be handled by Railway's volume mounting.
+RUN mkdir -p /home/node/.n8n
+
 USER node
 
-# Ensure correct permissions for the volume before starting n8n
-ENTRYPOINT ["/bin/ash", "-c", "chown -R node:node /home/node/.n8n && /usr/local/bin/n8n"]
+# Start n8n directly
+ENTRYPOINT ["/usr/local/bin/n8n"]
